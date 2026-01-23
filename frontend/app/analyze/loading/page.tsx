@@ -162,7 +162,7 @@ export default function LoadingPage() {
               <Globe className="w-4 h-4 md:w-5 md:h-5 text-white" />
             </div>
             <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              Perspective
+              ThinkVerse
             </span>
           </div>
           <div className="flex items-center space-x-4">
