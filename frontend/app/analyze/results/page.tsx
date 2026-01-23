@@ -85,7 +85,7 @@ export default function AnalyzePage() {
     setMessages(newMessages);
     setMessage("");
 
-    const res = await axios.post("https://thunder1245-perspective-backend.hf.space/api/chat", {
+    const res = await axios.post("https://thunder1245-thinkverse.hf.space/api/chat", {
       message: message,
     });
     const data = res.data;

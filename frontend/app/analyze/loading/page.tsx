@@ -74,10 +74,10 @@ export default function LoadingPage() {
 
         try {
           const [processRes, biasRes] = await Promise.all([
-            axios.post("https://thunder1245-perspective-backend.hf.space/api/process", {
+            axios.post("https://thunder1245-thinkverse.hf.space/api/process", {
               url: storedUrl,
             }),
-            axios.post("https://thunder1245-perspective-backend.hf.space/api/bias", {
+            axios.post("https://thunder1245-thinkverse.hf.space/api/bias", {
               url: storedUrl,
             }),
           ]);
