@@ -37,7 +37,7 @@ export default function AnalyzePage() {
       {
         role: "system",
         content:
-          "Welcome to the ThinkVerse chat. You can ask me questions about this article or request more information about specific claims.",
+          "Welcome to the Perspective chat. You can ask me questions about this article or request more information about specific claims.",
       },
     ]
   );
@@ -85,7 +85,7 @@ export default function AnalyzePage() {
     setMessages(newMessages);
     setMessage("");
 
-    const res = await axios.post("https://thunder1245-thinkverse-backend.hf.space/api/chat", {
+    const res = await axios.post("https://thunder1245-perspective-backend.hf.space/api/chat", {
       message: message,
     });
     const data = res.data;
@@ -145,7 +145,7 @@ export default function AnalyzePage() {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               <TabsList>
                 <TabsTrigger value="summary">Article</TabsTrigger>
-                <TabsTrigger value="perspectives">ThinkVerse</TabsTrigger>
+                <TabsTrigger value="perspectives">Perspective</TabsTrigger>
                 <TabsTrigger value="facts">Fact Check</TabsTrigger>
               </TabsList>
 

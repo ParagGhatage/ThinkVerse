@@ -1,0 +1,69 @@
+name: 🚀 Deploy Backend to HF Space
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "backend/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # set your HF username here (or replace with a secret if you prefer)
+    env:
+      HF_USER: Thunder1245
+      HF_REPO: thinkverse
+
+    steps:
+      - name: 👉 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Ensure HF_TOKEN is set
+        run: |
+          if [ -z "${{ secrets.HF_TOKEN }}" ]; then
+            echo "ERROR: HF_TOKEN secret is not set. Add it in repository secrets: Settings → Secrets & variables → Actions."
+            exit 1
+          fi
+
+      - name: 📂 Prepare Space repo (clone)
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          rm -rf space-backend || true
+          # clone using token in URL (this authenticates the clone)
+          git clone https://Thunder1245:${HF_TOKEN}@huggingface.co/spaces/Thunder1245/thinkverse.git space-backend
+
+      - name: 📦 Install rsync
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync
+
+      - name: 📤 Sync backend code to Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          set -e
+
+          cd space-backend
+
+          # Remove tracked files while preserving .git and config (ignore failure)
+          git rm -r . || true
+          cd ..
+
+          # Copy backend files into the cloned space directory
+          cp -R backend/. space-backend/
+
+          # Commit & push
+          cd space-backend
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add --all
+          git commit -m "Auto-deploy backend: ${{ github.sha }}" || echo "No changes to commit"
+          git push origin main
+
+      - name: ✅ Done
+        run: |
+          echo "Backend deployed to Hugging Face Space: https://huggingface.co/spaces/${HF_USER}/${HF_REPO}"
