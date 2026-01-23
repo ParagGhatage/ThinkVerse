@@ -15,6 +15,7 @@ Functions:
 
 
 import os
+import time
 from groq import Groq
 from dotenv import load_dotenv
 from app.logging.logging_config import setup_logger
@@ -32,27 +33,41 @@ def run_sentiment_sdk(state):
         if not text:
             raise ValueError("Missing or empty 'cleaned_text' in state")
 
-        chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "system",
-                    "content": (
-                        "You are a sentiment analysis assistant. "
-                        "Only respond with one word:"
-                        " Positive, Negative, or Neutral."
-                    ),
-                },
-                {
-                    "role": "user",
-                    "content": (
-                        f"Analyze the sentiment of the following text:\n\n{text}"
-                    ),
-                },
-            ],
-            model="llama-3.1-8b-instant",
-            temperature=0.2,
-            max_tokens=3,
-        )
+        # Retry logic for rate limit errors
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                chat_completion = client.chat.completions.create(
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                "You are a sentiment analysis assistant. "
+                                "Only respond with one word:"
+                                " Positive, Negative, or Neutral."
+                            ),
+                        },
+                        {
+                            "role": "user",
+                            "content": (
+                                f"Analyze the sentiment of the following text:\n\n{text}"
+                            ),
+                        },
+                    ],
+                    model="llama-3.1-8b-instant",
+                    temperature=0.2,
+                    max_tokens=3,
+                )
+                break  # Success, exit retry loop
+            except Exception as api_err:
+                if "429" in str(api_err) or "rate_limit" in str(api_err).lower():
+                    wait_time = (attempt + 1) * 5  # 5s, 10s, 15s
+                    logger.warning(f"Rate limited. Waiting {wait_time}s before retry {attempt + 1}/{max_retries}")
+                    time.sleep(wait_time)
+                    if attempt == max_retries - 1:
+                        raise  # Re-raise on last attempt
+                else:
+                    raise  # Re-raise non-rate-limit errors
 
         sentiment = chat_completion.choices[0].message.content.strip()
         sentiment = sentiment.lower()
