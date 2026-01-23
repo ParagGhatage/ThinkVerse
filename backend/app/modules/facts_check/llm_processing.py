@@ -64,7 +64,7 @@ def run_claim_extractor_sdk(state):
                     ),
                 },
             ],
-            model="llama-3.1-8b-instant",
+            model="qwen/qwen3-32b",
             temperature=0.3,
             max_tokens=512,
         )
@@ -138,7 +138,7 @@ def run_fact_verifier_sdk(search_results):
                                 ),
                             },
                         ],
-                        model="llama-3.1-8b-instant",
+                        model="qwen/qwen3-32b",
                         temperature=0.3,
                         max_tokens=256,
                     )

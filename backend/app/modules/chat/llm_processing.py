@@ -55,7 +55,7 @@ Question:
 """
 
     response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
+        model="qwen/qwen3-32b",
         messages=[
             {"role": "system", "content": "Use only the context to answer."},
             {"role": "user", "content": prompt},

@@ -61,7 +61,7 @@ def check_bias(text):
                     "content": (f"Give bias score to the following article \n\n{text}"),
                 },
             ],
-            model="llama-3.1-8b-instant",
+            model="qwen/qwen3-32b",
             temperature=0.3,
             max_tokens=512,
         )

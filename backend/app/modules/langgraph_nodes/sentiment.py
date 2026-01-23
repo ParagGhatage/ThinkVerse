@@ -54,7 +54,7 @@ def run_sentiment_sdk(state):
                             ),
                         },
                     ],
-                    model="llama-3.1-8b-instant",
+                    model="qwen/qwen3-32b",
                     temperature=0.2,
                     max_tokens=3,
                 )

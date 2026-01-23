@@ -24,7 +24,7 @@ logger = setup_logger(__name__)
 
 # Init once
 groq_llm = ChatGroq(
-    model="llama-3.1-8b-instant",
+    model="qwen/qwen3-32b",
     temperature=0.0,
     max_tokens=10,
 )
