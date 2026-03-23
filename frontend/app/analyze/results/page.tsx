@@ -127,15 +127,13 @@ export default function AnalyzePage() {
                         <p className="text-[#4a3a2e] font-serif text-lg leading-relaxed"><span className="font-bold uppercase text-sm tracking-wider mr-2 text-[#8b7355]">Evaluation:</span> {displayExplanation}</p>
                       </div>
                       
-                      {!hasError && fact.source_link && (
-                        <Link
-                          href={fact.source_link}
-                          target="_blank"
-                          className="inline-flex items-center text-sm font-bold text-[#6b4c31] hover:text-[#8b0000] hover:underline decoration-2 underline-offset-4 transition-colors uppercase tracking-wider"
-                        >
-                          <LinkIcon className="mr-2 h-4 w-4" /> Consult Archival Source
-                        </Link>
-                      )}
+                      <Link
+                        href={fact.source_link || "#"}
+                        target="_blank"
+                        className="inline-flex items-center text-sm font-bold text-[#6b4c31] hover:text-[#8b0000] hover:underline decoration-2 underline-offset-4 transition-colors uppercase tracking-wider"
+                      >
+                        <LinkIcon className="mr-2 h-4 w-4" /> Consult Archival Source
+                      </Link>
                     </div>
                   )})
                 ) : (
